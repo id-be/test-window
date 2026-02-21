@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dwdsk5yf6s0af"]
+
+[ext_resource type="Script" uid="uid://tc5vch4l51fe" path="res://real_sub_window.gd" id="1_l2f8e"]
+
+[node name="Window" type="Window" unique_id=314643139]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+script = ExtResource("1_l2f8e")

@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://0r62q4qxvfgg"]
+
+[ext_resource type="Script" uid="uid://cpx510cnlpph6" path="res://sub_window.gd" id="1_skta5"]
+[ext_resource type="Texture2D" uid="uid://cdje6ak610jm1" path="res://Box.png" id="2_clt08"]
+[ext_resource type="Texture2D" uid="uid://beg0t8t7n1ogx" path="res://X.png" id="2_ov4qg"]
+[ext_resource type="Texture2D" uid="uid://cp3fxfkharrmp" path="res://SubWindow.png" id="3_id7r3"]
+[ext_resource type="Texture2D" uid="uid://2nkqcupjb23n" path="res://icon.svg" id="5_ohcfa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ohcfa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ph3oo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x7g1r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_id7r3"]
+
+[node name="SubWindow" type="Node2D" unique_id=1100238095]
+script = ExtResource("1_skta5")
+window_big_sprite = ExtResource("2_clt08")
+window_min_sprite = ExtResource("3_id7r3")
+
+[node name="BGColorRect" type="ColorRect" parent="." unique_id=2140611026]
+offset_right = 89.0
+offset_bottom = 85.0
+color = Color(0.6901961, 0.6901961, 0.6901961, 1)
+
+[node name="TopRect" type="ColorRect" parent="BGColorRect" unique_id=1414459475]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 87.0
+offset_bottom = 22.0
+color = Color(0.03137255, 0.12941177, 0.41960785, 1)
+
+[node name="TopHighlight" type="ColorRect" parent="BGColorRect" unique_id=938402578]
+layout_mode = 0
+offset_right = 89.0
+offset_bottom = 2.0
+mouse_default_cursor_shape = 9
+
+[node name="LeftHighlight" type="ColorRect" parent="BGColorRect" unique_id=1142065491]
+layout_mode = 0
+offset_right = 2.0
+offset_bottom = 85.0
+mouse_default_cursor_shape = 10
+
+[node name="BottomShadow" type="ColorRect" parent="BGColorRect" unique_id=472845742]
+layout_mode = 0
+offset_top = 83.0
+offset_right = 89.0
+offset_bottom = 85.0
+mouse_default_cursor_shape = 9
+color = Color(0.46666667, 0.46666667, 0.46666667, 1)
+
+[node name="RightShadow" type="ColorRect" parent="BGColorRect" unique_id=198385478]
+layout_mode = 0
+offset_left = 87.0
+offset_right = 89.0
+offset_bottom = 85.0
+mouse_default_cursor_shape = 10
+color = Color(0.46666667, 0.46666667, 0.46666667, 1)
+
+[node name="SubViewport" type="SubViewport" parent="BGColorRect" unique_id=1576155527]
+
+[node name="Title" type="RichTextLabel" parent="." unique_id=1331662846]
+clip_contents = false
+offset_left = 2.0
+offset_top = -35.0
+offset_right = 87.0
+offset_bottom = 27.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 22
+text = "
+huh"
+fit_content = true
+
+[node name="MaxButton" type="TextureButton" parent="." unique_id=899320937]
+offset_left = 51.0
+offset_top = 4.0
+offset_right = 67.0
+offset_bottom = 20.0
+texture_normal = ExtResource("2_clt08")
+
+[node name="XButton" type="TextureButton" parent="." unique_id=747583620]
+offset_left = 69.0
+offset_top = 4.0
+offset_right = 85.0
+offset_bottom = 20.0
+texture_normal = ExtResource("2_ov4qg")
+
+[node name="BoxDragButton" type="Button" parent="." unique_id=646480875]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 51.0
+offset_bottom = 22.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ohcfa")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ph3oo")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_x7g1r")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_id7r3")
+
+[node name="DEBUGSprite2D" type="Sprite2D" parent="." unique_id=500614291]
+visible = false
+position = Vector2(-4.7683716e-07, -9.536743e-07)
+scale = Vector2(0.18750001, 0.171875)
+texture = ExtResource("5_ohcfa")
+
+[connection signal="pressed" from="MaxButton" to="." method="_on_max_button_pressed"]
+[connection signal="pressed" from="XButton" to="." method="_on_close_button_pressed"]
+[connection signal="button_down" from="BoxDragButton" to="." method="_on_box_drag_button_down"]
+[connection signal="button_up" from="BoxDragButton" to="." method="_on_box_drag_button_up"]

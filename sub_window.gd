@@ -4,8 +4,8 @@
 #color 2: #a5cef7
 
 extends Node2D
-
 class_name SubWindow
+
 
 var drag_offset := Vector2(0,0)
 var drag := false
@@ -40,19 +40,19 @@ var maximized := false:
 			$MaxButton.texture_normal = window_min_sprite
 			prev_window_pos = position
 			position = Vector2(0,0)
-			$BGColorRect/TopHighlight.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
-			$BGColorRect/LeftHighlight.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
-			$BGColorRect/BottomShadow.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
-			$BGColorRect/RightShadow.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
+			$BGColorRect/MarginContainer3/TopGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
+			$BGColorRect/MarginContainer2/LeftGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
+			$BGColorRect/MarginContainer4/BottomGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
+			$BGColorRect/MarginContainer/RightGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_ARROW
 			
 		else:
 			window_size = prev_window_size
 			$MaxButton.texture_normal = window_big_sprite
 			position = prev_window_pos
-			$BGColorRect/TopHighlight.mouse_default_cursor_shape = Input.CursorShape.CURSOR_VSIZE
-			$BGColorRect/LeftHighlight.mouse_default_cursor_shape = Input.CursorShape.CURSOR_HSIZE
-			$BGColorRect/BottomShadow.mouse_default_cursor_shape = Input.CursorShape.CURSOR_VSIZE
-			$BGColorRect/RightShadow.mouse_default_cursor_shape = Input.CursorShape.CURSOR_HSIZE
+			$BGColorRect/MarginContainer3/TopGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_VSIZE
+			$BGColorRect/MarginContainer2/LeftGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_HSIZE
+			$BGColorRect/MarginContainer4/BottomGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_VSIZE
+			$BGColorRect/MarginContainer/RightGrabber.mouse_default_cursor_shape = Input.CursorShape.CURSOR_HSIZE
 			
 @onready var window_size:
 	get:
@@ -67,24 +67,13 @@ var maximized := false:
 		
 		$BGColorRect/TopRect.size.x=value.x-2
 		
-		$BGColorRect/LeftHighlight.size.y=value.y
-		$BGColorRect/RightShadow.size.y=value.y-1
-		$BGColorRect/RightShadow.position.x=value.x-1
-		
 		$XButton.position.x = value.x - $XButton.size.x - 3
 		$MaxButton.position.x = $XButton.position.x - $MaxButton.size.x - 3
 		#here is where to add the minus_button, also update the dragbutton excess amount
 		
 		$BoxDragButton.size.x = $BGColorRect/TopRect.size.x-40
 		
-		$BGColorRect/TopHighlight.size.x=value.x
-		$BGColorRect/BottomShadow.size.x=value.x-1
-		$BGColorRect/BottomShadow.position.y=value.y-1
-		
 		$BGColorRect.size = value
-		
-		#if $BGColorRect.size == get_viewport_rect().size:
-			#maximized=true
 
 signal close_requested
 #signal minimize_requested
@@ -98,14 +87,15 @@ func _ready() -> void:
 	minimum_window_size = $BGColorRect.size
 	
 	connect("close_requested", _close_self)
-	for child in $BGColorRect.get_children():
-		if child.name == "TopRect" or child.name == "SubViewport":
-			pass
-		else:
-			child.connect("mouse_entered", _on_hover_stretch)
-			child.connect("mouse_exited", _on_leave_hover_stretch)
-			child.connect("gui_input", _on_gui_input)
+	#for child in $BGColorRect.get_children():
+		#if child.name == "TopRect" or child.name == "SubViewport":
+			#pass
+		#else:
+			#child.connect("mouse_entered", _on_hover_stretch)
+			#child.connect("mouse_exited", _on_leave_hover_stretch)
+			#child.connect("gui_input", _on_gui_input)
 	window_size = $BGColorRect.size
+	$BoxDragButton.set_focus_mode(Control.FOCUS_NONE)
 
 func _process(delta: float) -> void:
 	
@@ -128,9 +118,11 @@ func _on_box_drag_button_down() -> void:
 	get_parent().move_child(self,-1)
 	drag_offset = get_global_mouse_position()-position
 	drag = true#should also bump the window to the top of the stack.
+
+
 func _on_box_drag_button_up() -> void:
 	drag = false
-	$BoxDragButton.set_focus_mode(Control.FOCUS_NONE)
+
 
 func _on_hover_stretch() -> void:
 	if maximized or stretch:
@@ -138,6 +130,8 @@ func _on_hover_stretch() -> void:
 	else:
 		stretch = true
 		stretch_side = get_viewport().gui_get_hovered_control()
+
+
 func _on_leave_hover_stretch() -> void:
 	if maximized:
 		return
@@ -151,33 +145,39 @@ func _on_gui_input(event: InputEvent) -> void:
 			get_parent().move_child(self,-1)
 			if stretch_side && (Input.get_current_cursor_shape()==Input.CursorShape.CURSOR_VSIZE or Input.get_current_cursor_shape()==Input.CursorShape.CURSOR_HSIZE):
 				match stretch_side.name:
-					"TopHighlight":
+					"TopGrabber":
 						var prev_pos_y = position.y
 						var mouse_pos_y = get_global_mouse_position().y
 						var delta_y = prev_pos_y - mouse_pos_y
+						var pre_clamp_window_size = Vector2(window_size);
+						
+						# This value gets clamped, so we need to track how much it got clamped by
 						window_size.y += delta_y
-						if window_size.y != minimum_window_size.y:
-							position.y = mouse_pos_y
-					"LeftHighlight":
+						
+						if(pre_clamp_window_size.y + delta_y != window_size.y):
+							# A clamp occurred, measure the difference, and apply the movement to the position
+							var difference = (window_size.y - (pre_clamp_window_size.y + delta_y));
+							position.y = mouse_pos_y - difference; 
+						else:
+							position.y = mouse_pos_y;
+					"LeftGrabber":
 						var prev_pos_x = position.x
 						var mouse_pos_x = get_global_mouse_position().x
 						var delta_x = prev_pos_x - mouse_pos_x
+						var pre_clamp_window_size = Vector2(window_size);
 						
-						#if delta_x <= 0 && window_size.x == minimum_window_size.x:
-							#return
+						# This value gets clamped, so we need to track how much it got clamped by
 						window_size.x += delta_x
-						#IF (the mouse is farther right than the minimum left value):
-						#position.x = oldPosition.x
-						#scale.x = oldScale.x
-						#pass
 						
-						if window_size.x !=minimum_window_size.x:
-							position.x = mouse_pos_x
-						
-						#position.x = mouse_pos_x
-					"BottomShadow":
+						if(pre_clamp_window_size.x + delta_x != window_size.x):
+							# A clamp occurred, measure the difference, and apply the movement to the position
+							var difference = (window_size.x - (pre_clamp_window_size.x + delta_x));
+							position.x = mouse_pos_x - difference; 
+						else:
+							position.x = mouse_pos_x;
+					"BottomGrabber":
 						window_size.y = get_local_mouse_position().y
-					"RightShadow":
+					"RightGrabber":
 						window_size.x = get_local_mouse_position().x
 					_:
 						pass

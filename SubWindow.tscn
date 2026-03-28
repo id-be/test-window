@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://0r62q4qxvfgg"]
+[gd_scene load_steps=10 format=3 uid="uid://0r62q4qxvfgg"]
 
 [ext_resource type="Script" uid="uid://cpx510cnlpph6" path="res://sub_window.gd" id="1_skta5"]
 [ext_resource type="Texture2D" uid="uid://cdje6ak610jm1" path="res://Box.png" id="2_clt08"]
@@ -14,17 +14,17 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_id7r3"]
 
-[node name="SubWindow" type="Node2D" unique_id=1100238095]
+[node name="SubWindow" type="Node2D"]
 script = ExtResource("1_skta5")
 window_big_sprite = ExtResource("2_clt08")
 window_min_sprite = ExtResource("3_id7r3")
 
-[node name="BGColorRect" type="ColorRect" parent="." unique_id=2140611026]
+[node name="BGColorRect" type="ColorRect" parent="."]
 offset_right = 89.0
 offset_bottom = 85.0
 color = Color(0.6901961, 0.6901961, 0.6901961, 1)
 
-[node name="TopRect" type="ColorRect" parent="BGColorRect" unique_id=1414459475]
+[node name="TopRect" type="ColorRect" parent="BGColorRect"]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 2.0
@@ -32,37 +32,104 @@ offset_right = 87.0
 offset_bottom = 22.0
 color = Color(0.03137255, 0.12941177, 0.41960785, 1)
 
-[node name="TopHighlight" type="ColorRect" parent="BGColorRect" unique_id=938402578]
-layout_mode = 0
-offset_right = 89.0
-offset_bottom = 2.0
-mouse_default_cursor_shape = 9
+[node name="MarginContainer" type="MarginContainer" parent="BGColorRect"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_right = -2
 
-[node name="LeftHighlight" type="ColorRect" parent="BGColorRect" unique_id=1142065491]
-layout_mode = 0
+[node name="RightGrabber" type="MarginContainer" parent="BGColorRect/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 0
+mouse_default_cursor_shape = 10
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
+
+[node name="RightShadow" type="ColorRect" parent="BGColorRect/MarginContainer/RightGrabber"]
+custom_minimum_size = Vector2(2, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.46666667, 0.46666667, 0.46666667, 1)
+
+[node name="MarginContainer2" type="MarginContainer" parent="BGColorRect"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
 offset_right = 2.0
-offset_bottom = 85.0
-mouse_default_cursor_shape = 10
+grow_vertical = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_right = -2
 
-[node name="BottomShadow" type="ColorRect" parent="BGColorRect" unique_id=472845742]
-layout_mode = 0
-offset_top = 83.0
-offset_right = 89.0
-offset_bottom = 85.0
+[node name="LeftGrabber" type="MarginContainer" parent="BGColorRect/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 0
+mouse_default_cursor_shape = 10
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
+
+[node name="LeftHighlight" type="ColorRect" parent="BGColorRect/MarginContainer2/LeftGrabber"]
+custom_minimum_size = Vector2(2, 2)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="BGColorRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_bottom = -2
+
+[node name="TopGrabber" type="MarginContainer" parent="BGColorRect/MarginContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 0
 mouse_default_cursor_shape = 9
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopHighlight" type="ColorRect" parent="BGColorRect/MarginContainer3/TopGrabber"]
+custom_minimum_size = Vector2(2, 2)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer4" type="MarginContainer" parent="BGColorRect"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_bottom = -2
+
+[node name="BottomGrabber" type="MarginContainer" parent="BGColorRect/MarginContainer4"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 0
+mouse_default_cursor_shape = 9
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="BottomShadow" type="ColorRect" parent="BGColorRect/MarginContainer4/BottomGrabber"]
+custom_minimum_size = Vector2(2, 2)
+layout_mode = 2
+mouse_filter = 2
 color = Color(0.46666667, 0.46666667, 0.46666667, 1)
 
-[node name="RightShadow" type="ColorRect" parent="BGColorRect" unique_id=198385478]
-layout_mode = 0
-offset_left = 87.0
-offset_right = 89.0
-offset_bottom = 85.0
-mouse_default_cursor_shape = 10
-color = Color(0.46666667, 0.46666667, 0.46666667, 1)
+[node name="SubViewport" type="SubViewport" parent="BGColorRect"]
 
-[node name="SubViewport" type="SubViewport" parent="BGColorRect" unique_id=1576155527]
-
-[node name="Title" type="RichTextLabel" parent="." unique_id=1331662846]
+[node name="Title" type="RichTextLabel" parent="."]
 clip_contents = false
 offset_left = 2.0
 offset_top = -35.0
@@ -75,21 +142,21 @@ text = "
 huh"
 fit_content = true
 
-[node name="MaxButton" type="TextureButton" parent="." unique_id=899320937]
+[node name="MaxButton" type="TextureButton" parent="."]
 offset_left = 51.0
 offset_top = 4.0
 offset_right = 67.0
 offset_bottom = 20.0
 texture_normal = ExtResource("2_clt08")
 
-[node name="XButton" type="TextureButton" parent="." unique_id=747583620]
+[node name="XButton" type="TextureButton" parent="."]
 offset_left = 69.0
 offset_top = 4.0
 offset_right = 85.0
 offset_bottom = 20.0
 texture_normal = ExtResource("2_ov4qg")
 
-[node name="BoxDragButton" type="Button" parent="." unique_id=646480875]
+[node name="BoxDragButton" type="Button" parent="."]
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 51.0
@@ -99,12 +166,24 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_ph3oo")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_x7g1r")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_id7r3")
 
-[node name="DEBUGSprite2D" type="Sprite2D" parent="." unique_id=500614291]
+[node name="DEBUGSprite2D" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(-4.7683716e-07, -9.536743e-07)
 scale = Vector2(0.18750001, 0.171875)
 texture = ExtResource("5_ohcfa")
 
+[connection signal="gui_input" from="BGColorRect/MarginContainer/RightGrabber" to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="BGColorRect/MarginContainer/RightGrabber" to="." method="_on_hover_stretch"]
+[connection signal="mouse_exited" from="BGColorRect/MarginContainer/RightGrabber" to="." method="_on_leave_hover_stretch"]
+[connection signal="gui_input" from="BGColorRect/MarginContainer2/LeftGrabber" to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="BGColorRect/MarginContainer2/LeftGrabber" to="." method="_on_hover_stretch"]
+[connection signal="mouse_exited" from="BGColorRect/MarginContainer2/LeftGrabber" to="." method="_on_leave_hover_stretch"]
+[connection signal="gui_input" from="BGColorRect/MarginContainer3/TopGrabber" to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="BGColorRect/MarginContainer3/TopGrabber" to="." method="_on_hover_stretch"]
+[connection signal="mouse_exited" from="BGColorRect/MarginContainer3/TopGrabber" to="." method="_on_leave_hover_stretch"]
+[connection signal="gui_input" from="BGColorRect/MarginContainer4/BottomGrabber" to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="BGColorRect/MarginContainer4/BottomGrabber" to="." method="_on_hover_stretch"]
+[connection signal="mouse_exited" from="BGColorRect/MarginContainer4/BottomGrabber" to="." method="_on_leave_hover_stretch"]
 [connection signal="pressed" from="MaxButton" to="." method="_on_max_button_pressed"]
 [connection signal="pressed" from="XButton" to="." method="_on_close_button_pressed"]
 [connection signal="button_down" from="BoxDragButton" to="." method="_on_box_drag_button_down"]
